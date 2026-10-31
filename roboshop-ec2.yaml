@@ -23,4 +23,5 @@
   
   - name: Take output
     debug:
-      msg: "{{instance_output.results[0].instances[0].public_ip_address}}"
+      msg: "{{instance_output.results[0].instances[0].private_ip_address}}"
+      
