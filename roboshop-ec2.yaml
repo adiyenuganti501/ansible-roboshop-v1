@@ -21,7 +21,18 @@
     when: what_to_do == "create"
     register: "instance_output"
   
-  - name: Take output
-    debug:
-      msg: "{{instance_output.results[0].instances[0].private_ip_address}}"
+  # - name: Take output
+  #   debug:
+  #     msg: "{{instance_output.results[0].instances[0].private_ip_address}}"
       
+
+  - name: reate r53 record
+    amazon.aws.route53_info:
+     state: present
+     zone: "{{ domine_name  }}"
+     record: "{{ item.item }}.{{ domine_name }}"
+     tyep: A
+     ttl: 1
+     value: "{{item.instances[0].private_ip_address}}"
+    loop: "{{instance_output}}"
+    when: what_to_do "create"
