@@ -26,13 +26,17 @@
   #     msg: "{{instance_output.results[0].instances[0].private_ip_address}}"
       
 
-  - name: reate r53 record
-    amazon.aws.route53_info:
-     state: present
-     zone: "{{ domine_name  }}"
-     record: "{{ item.item }}.{{ domine_name }}"
-     tyep: A
-     ttl: 1
-     value: "{{item.instances[0].private_ip_address}}"
-    loop: "{{instance_output}}"
-    when: what_to_do "create"
+  - name: create r53 record
+  amazon.aws.route53:
+    state: "{{ action }}"
+    zone: "{{ domain_name }}"
+    record: "{{ item.item }}.{{ domain_name }}"
+    type: A
+    ttl: 1
+    value: "{{ item.instances[0].private_ip_address }}"
+    overwrite: true
+  loop: "{{ ec2_output.results }}"
+
+
+
+  
