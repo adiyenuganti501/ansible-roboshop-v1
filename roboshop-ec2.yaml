@@ -3,7 +3,7 @@
   connection: local
   vars:
     instances: ['mongodb']
-    action: create
+    what_to_do: create
     domine_name: khiranya.online
     ami_id: ami-0055977a6e828a4f4
 
@@ -18,4 +18,4 @@
      - "roboshop-{{ item }}"
      region: us-east-1
     loop: "{{ instances }}"
-    when: action == "create"
+    when: what_to_do == "create"
