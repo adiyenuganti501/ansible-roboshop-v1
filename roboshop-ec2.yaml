@@ -19,3 +19,8 @@
      region: us-east-1
     loop: "{{ instances }}"
     when: what_to_do == "create"
+    register: "instance_output"
+  
+  - name: Take output
+    debug:
+      msg: "{{instance_output}}"
