@@ -11,34 +11,34 @@
       name: nodejs
       state: present
 
-  - name: create roboshop user
-    user:
-      name: roboshop
-      create_home: false
-      home: /app
-      system: true
-      shell: /sbin/nologin
-      comment: "roboshop system user"
+  # - name: create roboshop user
+  #   user:
+  #     name: roboshop
+  #     create_home: false
+  #     home: /app
+  #     system: true
+  #     shell: /sbin/nologin
+  #     comment: "roboshop system user"
 
-  - name: remove existing directory
-    file:
-      path: /
-      state: absent
+  # - name: remove existing directory
+  #   file:
+  #     path: /
+  #     state: absent
 
-  - name: remove catalog zip
-    file:
-      path: /tmp/catalogue.zip
-      state: absent
+  # - name: remove catalog zip
+  #   file:
+  #     path: /tmp/catalogue.zip
+  #     state: absent
 
-  - name: create app directory
-    file: 
-      path: /app
-      state: directory
+  # - name: create app directory
+  #   file: 
+  #     path: /app
+  #     state: directory
   
-  - name: dowload catalogue applicarion
-    get_url:
-      url: https://raw.githubusercontent.com/daws-92s/roboshop-documentation/refs/heads/main/artifacts/catalogue-v4.zip
-      dest: /tmp/catalogue.zip
+  # - name: dowload catalogue applicarion
+  #   get_url:
+  #     url: https://raw.githubusercontent.com/daws-92s/roboshop-documentation/refs/heads/main/artifacts/catalogue-v4.zip
+  #     dest: /tmp/catalogue.zip
 
   # - name: unzip catalogue code
   #   unarchive:
