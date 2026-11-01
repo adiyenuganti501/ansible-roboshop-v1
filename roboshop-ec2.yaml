@@ -37,7 +37,24 @@
      overwrite: true
     loop: "{{ instance_output.results }}"
     when: what_to_do == "create"
-
+  - name: delete r53 record
+    amazon.aws.route53:
+      state: absent
+      zone: "{{ domain_name }}"
+      record: "{{ item.item }}.{{ domain_name }}"
+      type: A
+      ttl: 1
+    loop:  "{{ instance_output.results }}"
+    when: what_to_do == "delete"
+    
+  - name : delete ec2 instance
+    amazon.aws.ec2_instance:
+      state: absent
+      name: "roboshop-{{ item }}"
+      region: us-east-1
+      wait: false
+    loop: "{{ instances }}"
+    when: action == "delete
 
 
 
