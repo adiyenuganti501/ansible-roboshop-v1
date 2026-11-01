@@ -54,7 +54,7 @@
       region: us-east-1
       wait: false
     loop: "{{ instances }}"
-    when: what_to_do == "delete
+    when: what_to_do == "delete"
 
 
 
