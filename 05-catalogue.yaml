@@ -67,11 +67,10 @@
   
   - name: check products loaded or not
     command: mongosh --host "{{ mongodb_host }}" --quiet --eval 'db.getSiblingDB("catalogue").products.countDocuments()'
-    register: product_count
-
-  - name: pritn product count
+    register: product_count 
+  - name: print product count 
     debug:
-      msg: "{{product_count}}"
+      msg: "{{ product_count.stdout }}"
 
 
 
