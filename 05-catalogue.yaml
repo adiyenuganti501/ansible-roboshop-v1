@@ -22,7 +22,7 @@
 
   - name: remove existing directory
     file:
-      path: /
+      path: /app
       state: absent
 
   - name: remove catalog zip
