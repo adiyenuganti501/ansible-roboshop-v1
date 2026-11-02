@@ -8,5 +8,11 @@ catalogue_host: catalogue.khiranya.online
 user_host: user.khiranya.online
 cart_host: cart.khiranya.online
 shipping_host: shipping.khiranya.online
+payment_host: payment.khiranya.online
+mysql_root_password: RoboShop@1
+shipping_db_user: shipping
+shipping_db_password: RoboShop@1
+rabbitmq_user: roboshop
+rabbitmq_password: roboshop123
 
 
