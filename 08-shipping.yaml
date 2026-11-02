@@ -52,7 +52,7 @@
     command: mvn -version
     args:
       chdir: /app
-    registers: mvn_default
+    register: mvn_default
   
   - name: print maven version without JAVA_HOME
     debug:
