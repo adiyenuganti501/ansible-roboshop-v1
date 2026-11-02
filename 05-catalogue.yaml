@@ -47,12 +47,12 @@
       dest: /app
       remote_src: yes
 
-  - name: set application ownership
-    file:
-      path: /app
-      owner: roboshop
-      group: roboshop
-      recurse: yes
+  # - name: set application ownership
+  #   file:
+  #     path: /app
+  #     owner: roboshop
+  #     group: roboshop
+  #     recurse: yes
 
   - name: install dependencies
     community.general.npm:
