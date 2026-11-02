@@ -80,7 +80,7 @@
 
   - name: print product count
     debug:
-      msg: "{{ product_count.stdout }}"
+      msg: "{{ product_count }}"
 
   - name: load products
     command: mongosh --host "{{ mongodb_host }}" --quiet /app/schema/catalogue.js
