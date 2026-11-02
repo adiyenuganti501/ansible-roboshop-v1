@@ -72,6 +72,22 @@
     debug:
       msg: "{{ product_count.stdout }}"
 
+  - name: load products
+    command: mongosh --host "{{ mongodb_host }}" --quiet /app/schema/catalogue.js
+    when: product_count.stdout|int == 0
+
+  - name: daemon reload
+    systemd_service:
+      demon_reload: yes
+  
+  - name: starta and enable catalogue service
+    service:
+      name: catalogue
+      state: started
+      enabled: yes
+
+
+
 
 
 
