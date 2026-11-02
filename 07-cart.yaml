@@ -34,7 +34,7 @@
   
   - name: create app directory
     file:
-      fpath: /app
+      path: /app
       state: directory
 
   - name: download cart application
