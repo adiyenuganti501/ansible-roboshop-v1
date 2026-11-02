@@ -2,4 +2,109 @@
   hosts: shipping
   become: yes
   tasks:
-  - name: 
+  - name: enable maven 3.9
+    command : dnf module enable maven:3.9 -y
+  
+  - name: install maven and java25
+    dnf:
+      name:
+      - maven
+      - java-25-openjdk-devel
+      - mysql
+      state: present
+
+  - name: create roboshop system user
+    user:
+      name: roboshop
+      create_home: false
+      home: /app
+      system: true
+      shell: /sbin/nologin
+      comment: "roboshop system user"
+
+  - name: remove existing directory
+    file:
+      path: /app  
+      state: absent
+  
+  - name: remove shipping zip
+    file:
+      path: /tmp/shipping.zip
+      state: absent
+
+  - name: create app directory
+    file:
+      path: /app
+      state: directory
+
+  - name: download shipping application
+    get_url:
+      url: https://raw.githubusercontent.com/daws-92s/roboshop-documentation/refs/heads/main/artifacts/shipping-v4.zip
+      dest: /tmp/shipping.zip
+
+  - name: unzip shipping code
+    unarchive:
+      src: /tmp/shipping.zip
+      dest: /app
+      remote_src: yes
+
+  - name: maven version without JAVA_HOME
+    command: mvn -version
+    args:
+      chdir: /app
+    registers: mvn_default
+  
+  - name: print maven version without JAVA_HOME
+    debug:
+      msg: "{{ mvn_default.stdout_lines }}"
+
+  - name: build shipping code
+    command: mvn clean package
+    args:
+      chdir: /app
+    # environment:
+    #   JAVA_HOME: /usr/lib/jvm/java-25-openjdk
+
+  - name: move shipping jar file
+    command: mv target/shipping.jar shipping.jar
+    args:
+      chdir: /app
+  
+  - name: check citis data exit or not
+    command: mysql -h "{{ mysql_host }}" -u root -p{{ mysql_root_password }} -N -B -e "SELECT COUNT(*) FROM cities.cities;"
+    register: cities_count
+    ignore_errors: true
+    tags:
+      - mysql
+  
+  - name: print cities count
+    debug:
+      msg: "{{ cities_count}}"
+    tags:
+      - mysql
+  
+  - name: load cities data into mysql
+    shell: mysql -h "{{ mysql_host }}" -u root -p{{ mysql_root_password }} < /app/db/master-data.sql
+    when: cities_count.rc != 0 or cities_count.stdout | int == 0
+    tags:
+    - mysql
+
+  - name: create app user in mysql
+    shell: mysql -h "{{ mysql_host }}" -u root -p{{ mysql_root_password }} < /app/db/app-user.sql
+    tags:
+    - mysql
+  
+  - name: copy shipping service
+    template:
+      src: shipping.service.j2
+      dest: /etc/systemd/system/shipping.service
+ 
+  - name: daemon reload
+    systemd_service:
+      daemon_reload: true
+
+  - name: start shipping service
+    systemd_service:
+      name: shipping
+      state: started
+      enabled: yes
