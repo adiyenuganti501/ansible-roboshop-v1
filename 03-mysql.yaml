@@ -8,7 +8,7 @@
 
   - name: install mysql
     package:
-      name: mysql
+      name: mysql-server
       state: present
 
   - name: enable and restart mysql
