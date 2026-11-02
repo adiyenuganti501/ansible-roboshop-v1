@@ -1,0 +1,57 @@
+- name: configure nginx server
+  hosts: frontend
+  become: yes
+  tasks:
+  - name: enable nginx 1.26
+    command: dnf module enable nginx:1.26 -y
+
+
+  - name: install nginx
+    dnf:
+      name: nginx
+      state: present
+
+  - name: start and enable nginx
+    service:
+      name: nginx
+      state: started
+      enabled: yes
+
+  - name: find all the contents inside the directory
+    find:
+      paths: /usr/share/nginx/html
+      recurse: yes
+    register: directory_contents
+
+  - name: print the contents of the directory
+    debug:
+      var: directory_contents
+  
+  - name: remove all the contents inside the directory
+    ansible.builtin.file:
+      path: "{{ item.path }}"
+      state: absent
+      loop: "{{ directory_contents.files }}"
+      when: directory_contents.matched > 0
+
+
+  - name: download frontend content
+    get_url:
+      url: https://raw.githubusercontent.com/daws-92s/roboshop-documentation/refs/heads/main/artifacts/frontend-v4.zip
+      dest: /tmp/frontend.zip
+
+  - name: unzip frontend content
+    unarchive:
+      src: /tmp/frontend.zip
+      dest: /usr/share/nginx/html
+      remote_src: yes
+
+  - name: copy nginx configuration
+    template:
+      src: roboshop.conf.j2
+      dest: /etc/nginx/default.d/roboshop.conf
+
+  - name: restart nginx
+    service:
+      name: nginx
+      state: restarted  
