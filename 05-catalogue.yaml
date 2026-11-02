@@ -78,7 +78,7 @@
 
   - name: daemon reload
     systemd_service:
-      demon_reload: yes
+      daemon_reload: yes
   
   - name: starta and enable catalogue service
     service:
