@@ -1,0 +1,5 @@
+- name: configure shipping server
+  hosts: shipping
+  become: yes
+  tasks:
+  - name: 

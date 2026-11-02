@@ -1,3 +1,12 @@
 ansible_user: ec2-user
 ansible_password: DevOps321
 mongodb_host: mongodb.khiranya.online
+redis_host: redis.khiranya.online
+mysql_host: mysql.khiranya.online
+rabbitmq_host: rabbitmq.khiranya.online
+catalogue_host: catalogue.khiranya.online
+user_host: user.khiranya.online
+cart_host: cart.khiranya.online
+shipping_host: shipping.khiranya.online
+
+

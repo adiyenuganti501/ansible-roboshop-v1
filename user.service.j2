@@ -1,0 +1,17 @@
+[Unit]
+Description=User Service
+After=network-online.target
+
+[Service]
+User=roboshop
+Environment=REDIS_URL="redis://{{ redis_host }}:6379"
+Environment=MONGO_URL="mongodb://{{ mongodb_host }}:27017/users"
+Environment=MYSQL_URL="mysql://{{ mysql_host }}:3306/users"
+Environment=RABBITMQ_URL="rabbitmq://{{ rabbitmq_host }}:5672/users"
+ExecStart=/bin/node /app/server.js
+SyslogIdentifier=user
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
