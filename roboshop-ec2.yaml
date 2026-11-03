@@ -68,6 +68,7 @@
     record: "{{ domain_name }}"
     type: A
     ttl: 1
+    loop: "{{ instances }}"
     when: what_to_do == "delete"
     
     
