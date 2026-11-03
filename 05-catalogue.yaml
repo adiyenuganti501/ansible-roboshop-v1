@@ -54,9 +54,9 @@
   # #     group: roboshop
   # #     recurse: yes
 
-  # - name: install dependencies
-  #   community.general.npm:
-  #     path: /app
+  - name: install dependencies
+    community.general.npm:
+      path: /app
 
   # - name: copy catalogue service
   #   template:
