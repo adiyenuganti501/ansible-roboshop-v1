@@ -46,9 +46,9 @@
      record: "{{ domain_name }}"
      type: A
      ttl: 1
-     value: "{{ item.instances[0].public_ip_address }}"
+     value: "{{ item.instances[0].public_ip_address  }}"
      overwrite: true
-    loop: "{{ instance_output }}"
+    loop: "{{ instance_output.results }}"
     when: what_to_do == "create" and item.item == "frontend"  
 
   - name: delete r53 record
