@@ -38,6 +38,19 @@
      overwrite: true
     loop: "{{ instance_output.results }}"
     when: what_to_do == "create"
+
+  - name: create r53 record for frontend
+    amazon.aws.route53:
+     state: present
+     zone: "{{ domain_name }}"
+     record: "{{ domain_name }}"
+     type: A
+     ttl: 1
+     value: "{{ item.instances[0].public_ip_address }}"
+     overwrite: true
+    loop: "{{ instance_output }}"
+    when: what_to_do == "create" and item.item == "frontend"  
+
   - name: delete r53 record
     amazon.aws.route53:
       state: absent
@@ -47,6 +60,16 @@
       ttl: 1
     loop:  "{{ instance_output.results }}"
     when: what_to_do == "delete"
+
+  - name: delete r53 record for frontend
+    amazon.aws.route53:
+    state: absent
+    zone: "{{ domain_name }}"
+    record: "{{ domain_name }}"
+    type: A
+    ttl: 1
+    when: what_to_do == "delete"
+    
     
   - name : delete ec2 instance
     amazon.aws.ec2_instance:
@@ -56,6 +79,10 @@
       wait: false
     loop: "{{ instances }}"
     when: what_to_do == "delete"
+
+
+
+
 
 
 
