@@ -58,7 +58,7 @@
       record: "{{ item.item }}.{{ domain_name }}"
       type: A
       ttl: 1
-    loop:  "{{ instance_output }}"
+    loop:  "{{ instances  }}"
     when: what_to_do == "delete"
 
   - name: delete r53 record for frontend
