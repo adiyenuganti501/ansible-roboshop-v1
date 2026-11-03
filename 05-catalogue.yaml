@@ -47,52 +47,45 @@
       dest: /app
       remote_src: yes
 
-  # # - name: set application ownership
-  # #   file:
-  # #     path: /app
-  # #     owner: roboshop
-  # #     group: roboshop
-  # #     recurse: yes
-
   - name: install dependencies
     community.general.npm:
       path: /app
 
-  # - name: copy catalogue service
-  #   template:
-  #     src: catalogue.service.j2
-  #     dest: /etc/systemd/system/catalogue.service
+  - name: copy catalogue service
+    template:
+      src: catalogue.service.j2
+      dest: /etc/systemd/system/catalogue.service
 
-  # - name: copy mongo repo
-  #   copy:
-  #     src: mongo.repo
-  #     dest: /etc/yum.repos.d/mongo.repo
+  - name: copy mongo repo
+    copy:
+      src: mongo.repo
+      dest: /etc/yum.repos.d/mongo.repo
 
-  # - name: install mongodb client
-  #   dnf:
-  #     name: mongodb-mongosh
-  #     state: present
+  - name: install mongodb client
+    dnf:
+      name: mongodb-mongosh
+      state: present
 
-  # - name: check products loaded or not
-  #   command: mongosh --host "{{ mongodb_host }}" --quiet --eval 'db.getSiblingDB("catalogue").products.countDocuments()'
-  #   register: product_count
-  #   changed_when: false
+  - name: check products loaded or not
+    command: mongosh --host "{{ mongodb_host }}" --quiet --eval 'db.getSiblingDB("catalogue").products.countDocuments()'
+    register: product_count
+    changed_when: false
 
-  # - name: print product count
-  #   debug:
-  #     msg: "{{ product_count }}"
+  - name: print product count
+    debug:
+      msg: "{{ product_count }}"
 
-  # - name: load products
-  #   shell: mongosh --host "{{ mongodb_host }}" --quiet /app/schema/catalogue.js
-  #   when: product_count.stdout | int == 0
+  - name: load products
+    shell: mongosh --host "{{ mongodb_host }}" --quiet /app/schema/catalogue.js
+    when: product_count.stdout | int == 0
 
-  # - name: daemon reload
-  #   ansible.builtin.systemd:
-  #     daemon_reload: yes
+  - name: daemon reload
+    ansible.builtin.systemd:
+      daemon_reload: yes
 
-  # - name: start and enable catalogue service
-  #   service:
-  #     name: catalogue
-  #     state: started
-  #     enabled: yes
+  - name: start and enable catalogue service
+    service:
+      name: catalogue
+      state: started
+      enabled: yes
 
