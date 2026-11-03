@@ -32,7 +32,7 @@
       path: "{{ item.path }}"
       state: absent
       loop: "{{ directory_contents.files }}"
-      when: directory_contents.matched > 0
+     
 
 
   - name: download frontend content
