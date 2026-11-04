@@ -47,8 +47,8 @@
   - name: install dependencies in virtaul environment
     ansible.builtin.pip:
       requirements: /app/requirements.txt
-      virtualenv: /app/venv
-      virtualenv_command: /usr/bin/python3.14 -m venv
+      virtualenv: /app/.venv
+      virtualenv_command: python3.14 -m venv
 
   - name: copy payment service
     template:
@@ -62,5 +62,5 @@
   - name: start payment service
     systemd:
       name: payment
-      state: started
+      state: restarted
       enabled: yes
