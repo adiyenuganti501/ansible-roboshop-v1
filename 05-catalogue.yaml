@@ -6,7 +6,7 @@
 
   - name: disable default nodejs
     command: dnf module disable nodejs -y
-  
+
   - name: enable nodejs 24
     command: dnf module enable nodejs:24 -y
 
@@ -78,7 +78,7 @@
       msg: "{{ product_count }}"
 
   - name: load products
-    shell: mongosh --host "{{ mongodb_host }}" <  /app/db/master-data.js
+    shell: mongosh --host "{{ mongodb_host }}" < /app/db/master-data.js
     when: product_count.stdout | int == 0
 
   - name: daemon reload
@@ -90,4 +90,3 @@
       name: catalogue
       state: restarted
       enabled: yes
-
