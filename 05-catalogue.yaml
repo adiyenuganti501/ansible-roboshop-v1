@@ -82,7 +82,7 @@
     when: product_count.stdout | int == 0
 
   - name: daemon reload
-    ansible.builtin.systemd:
+    systemd_service:
       daemon_reload: yes
 
   - name: start and enable catalogue service
